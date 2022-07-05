@@ -9,7 +9,7 @@ import { getPosts, createPost } from '~/services/post.server';
 import type { Post } from '~/services/post.server';
 import { Post as PostComponent } from '~/components/Post';
 import { PostForm } from '~/components/PostForm';
-import { CreatePost } from '../services/validations';
+import { CreatePost } from '../../services/validations';
 
 type LoaderData = {
   posts: Awaited<ReturnType<typeof getPosts>>;
