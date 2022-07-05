@@ -12,7 +12,7 @@ import { PostForm } from '~/components/PostForm';
 import { CreatePost } from '../services/validations';
 
 type LoaderData = {
-  posts: Post[];
+  posts: Awaited<ReturnType<typeof getPosts>>;
 };
 
 type ActionData = {
@@ -50,6 +50,7 @@ export const action: ActionFunction = async ({ request }) => {
   await createPost({
     title: result.data.title ?? null,
     body: result.data.body,
+    authorId: 'faker',
   });
 
   return redirect('/');
@@ -75,7 +76,9 @@ export default function Index() {
       <ul>
         {posts.map((post) => (
           <li key={post.title}>
-            <PostComponent title={post?.title}>{post.body}</PostComponent>
+            <PostComponent title={post?.title} authorName={post?.author?.email}>
+              {post.body}
+            </PostComponent>
           </li>
         ))}
       </ul>
