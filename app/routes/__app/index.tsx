@@ -10,6 +10,7 @@ import type { Post } from '~/services/post.server';
 import { Post as PostComponent } from '~/components/Post';
 import { PostForm } from '~/components/PostForm';
 import { CreatePost } from '../../services/validations';
+import { authenticator } from '../../services/auth.server';
 
 type LoaderData = {
   posts: Awaited<ReturnType<typeof getPosts>>;
@@ -30,6 +31,9 @@ type ActionData = {
 };
 
 export const action: ActionFunction = async ({ request }) => {
+  const user = await authenticator.isAuthenticated(request, {
+    failureRedirect: '/login',
+  });
   const form = await request.formData();
   const rawTitle = form.get('title');
   const rawBody = form.get('body');
@@ -50,13 +54,14 @@ export const action: ActionFunction = async ({ request }) => {
   await createPost({
     title: result.data.title ?? null,
     body: result.data.body,
-    authorId: 'faker',
+    authorId: user.id,
   });
 
   return redirect('/');
 };
 
-export const loader: LoaderFunction = async () => {
+export const loader: LoaderFunction = async ({ request }) => {
+  await authenticator.isAuthenticated(request, { failureRedirect: '/login' });
   const data: LoaderData = { posts: await getPosts() };
   return json(data);
 };
