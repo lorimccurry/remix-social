@@ -1,3 +1,5 @@
+[egghead.io Remix tutorial](https://egghead.io/courses/learn-remix-by-building-a-social-media-platform-with-typescript-and-prisma-cddb0550): Learn Remix by Building a Social Media Platform with TypeScript and Prisma
+
 # Welcome to Remix!
 
 - [Remix Docs](https://remix.run/docs)
